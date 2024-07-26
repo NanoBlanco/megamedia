@@ -1,5 +1,7 @@
 package com.desarrollo.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +23,7 @@ import com.desarrollo.security.jwt.JwtUtils;
 import com.desarrollo.services.UserService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -28,13 +31,14 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins="*", maxAge=3600)
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@Api(value="A")
+@Api(value="Controlador de acceso")
 public class AuthController {
 	
 	private final UserService userService;
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtils jwtUtils;
 	
+	@ApiOperation(value="Valida el acceso a los usuarios", response = List.class)
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody LoginRequest request) {
 		
@@ -54,6 +58,8 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
 	}
 
+	
+	@ApiOperation(value="Registra a los usuarios", response = List.class)
 	@PostMapping("/register")
 	public ResponseEntity<?> registroUsuario(@Valid @RequestBody User user){
 		try {

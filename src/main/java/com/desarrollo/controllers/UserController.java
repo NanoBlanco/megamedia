@@ -16,19 +16,25 @@ import com.desarrollo.entities.User;
 import com.desarrollo.exceptions.UserException;
 import com.desarrollo.services.IUserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge=3600)
 @RequestMapping("/api")
+@Api(value="Controlador de usuarios")
 public class UserController {
 	
 	@Autowired
 	private IUserService IuserService;
 	
+	@ApiOperation(value="Genera una lista de todos los usuarios", response = List.class)
 	@GetMapping("/users/all")
 	public ResponseEntity<List<User>> getAllUsers(){
 		return new ResponseEntity<>(IuserService.getUsers(),HttpStatus.FOUND);
 	}
 	
+	@ApiOperation(value="Devuelve un usuario por correo", response = List.class)
 	@GetMapping("/user/{correo}")
 	public ResponseEntity<?> getUserByEmail(@PathVariable("correo") String correo) {
 		try {
@@ -40,7 +46,8 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error recuperando el usuario");
 		}
 	}
-		
+	
+	@ApiOperation(value="Elimina a un usuario a partir de su correo", response = List.class)
 	@DeleteMapping("/user/del/{correo}")
 	public ResponseEntity<String> deleteUser(@PathVariable String correo) {
 		try {
